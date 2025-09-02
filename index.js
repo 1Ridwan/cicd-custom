@@ -1,14 +1,11 @@
-import * as core from '@actions/core';
+const core = require('@actions/core');
 
-async function run() {
+(async () => {
   try {
     const nameToGreet = core.getInput('who-to-greet', { required: true });
-    console.log(`Hello, ${nameToGreet}!`);
+    core.info(`Hello, ${nameToGreet}!`);
     core.setOutput('time', new Date().toTimeString());
-  } catch (err: unknown) {
-    const e = err as Error;
-    core.setFailed(e.message ?? String(err));
+  } catch (err) {
+    core.setFailed(err instanceof Error ? err.message : String(err));
   }
-}
-
-run();
+})();
